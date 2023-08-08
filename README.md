@@ -10,7 +10,7 @@ This project will include a web app where an emergency worker can input a new me
 There are three components of this project:
 
 ### 1.ETL Pipeline
-File data/process_data.py contains data cleaning pipeline that:
+File process_data.py contains data cleaning pipeline that:
 
 1.Loads the messages and categories dataset
 2.Merges the two datasets
@@ -18,15 +18,14 @@ File data/process_data.py contains data cleaning pipeline that:
 4.Stores it in a SQLite database
 
 ### 2.ML Pipeline
-File models/train_classifier.py contains machine learning pipeline that:
+File ML Pipeline Preparation.py contains machine learning pipeline that:
 
 1.Loads data from the SQLite database
 2.Splits the data into training and testing sets
 3.Builds a text processing and machine learning pipeline
 4.Trains and tunes a model using GridSearchCV
 5.Outputs result on the test set
-6.Exports the final model as a pickle file
-7.The Analysis shows when is the best time to visit Seattle, which neighborhood should you rent in.
+6.Exports the final model as a pickle file.
 
 
 ### 2.3 Flask Web App

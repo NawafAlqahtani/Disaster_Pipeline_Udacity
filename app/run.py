@@ -33,25 +33,25 @@ df = pd.read_sql_table('Df', engine)
 model = joblib.load("model.pkl")
 
 
-
 # index webpage displays cool visuals and receives user input text for model
 @app.route('/')
 @app.route('/index')
 def index():
     
     # extract data needed for visuals
-    
+    # TODO: Below is an example - modify to extract data for your own visuals
     genre_counts = df.groupby('genre').count()['message']
     genre_names = list(genre_counts.index)
     
-    df1 = df.drop(['id','message','original','genre'], axis=1)
-    category_counts=df1.sum(axis=0)
-    category_names = df1.columns
+    # Top five categories count
+    top_category_count = df.iloc[:,4:].sum().sort_values(ascending=False)[1:11]
+    top_category_names = list(top_category_count.index)
     
     # create visuals
-    # TODO: Below is an example - modify to create your own visuals
     graphs = [
-        {
+
+        # GRAPH 1 - genre graph
+    	{
             'data': [
                 Bar(
                     x=genre_names,
@@ -69,21 +69,22 @@ def index():
                 }
             }
         },
+
+        # GRAPH 2 - category graph
         {
             'data': [
                 Bar(
-                    x=category_names,
-                    y=category_counts
+                    x=top_category_names,
+                    y=top_category_count
                 )
             ],
-
             'layout': {
-                'title': 'Distribution of Message Categories',
+                'title': 'Top 10 Message Categories',
                 'yaxis': {
                     'title': "Count"
                 },
                 'xaxis': {
-                    'title': "Category"
+                    'tickangle':-45
                 }
             }
         }
@@ -107,7 +108,7 @@ def go():
     classification_labels = model.predict([query])[0]
     classification_results = dict(zip(df.columns[4:], classification_labels))
 
-    # This will render the go.html Please see that file. 
+    # This will render the go.html
     return render_template(
         'go.html',
         query=query,
@@ -116,7 +117,7 @@ def go():
 
 
 def main():
-    app.run(host='0.0.0.0', port=3001, debug=True)
+    app.run(host='0.0.0.0', port=3000, debug=True)
 
 
 if __name__ == '__main__':
